@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MediFlow HMS | Hospital Management System</title>
+  <!-- Font Awesome Icons (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts for clean typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #eef5f9;
+      color: #133c4b;
+      padding: 24px 20px;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Header style */
+    .header {
+      background: white;
+      border-radius: 36px;
+      padding: 20px 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .logo h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1b6b8a, #249f8f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .logo p {
+      font-size: 0.8rem;
+      color: #5885a2;
+      margin-top: 5px;
+    }
+    .badge-header {
+      background: #e1f0f0;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .badge-header i {
+      color: #249f8f;
+      margin-right: 8px;
+    }
+
+    /* Stats cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 22px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: white;
+      padding: 20px 18px;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: 0.2s;
+      border: 1px solid #e2edf0;
+    }
+    .stat-icon {
+      width: 54px;
+      height: 54px;
+      background: #e2f3f0;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: #1e7e6f;
+    }
+    .stat-info h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #124c5e;
+    }
+    .stat-info p {
+      color: #5e8da0;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    /* Two panel layout */
+    .dashboard-panels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+    }
+    .panel {
+      flex: 1;
+      min-width: 320px;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      border: 1px solid #e2edf2;
+    }
+    .panel-header {
+      padding: 20px 26px;
+      background: #ffffff;
+      border-bottom: 1.5px solid #ecf3f8;
+    }
+    .panel-header h2 {
+      font-size: 1.45rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .panel-body {
+      padding: 24px 26px 28px;
+    }
+
+    /* Form controls */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: block;
+      margin-bottom: 6px;
+      color: #2b5c74;
+      letter-spacing: 0.3px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 20px;
+      border: 1.5px solid #dae6ec;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      background: #fdfdfd;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #249f8f;
+      box-shadow: 0 0 0 3px rgba(36, 159, 143, 0.15);
+    }
+    .btn {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+    }
+    .btn-primary {
+      background: #1c7b64;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .btn-primary:hover {
+      background: #136454;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #eef2f5;
+      color: #1f5f73;
+      width: auto;
+      padding: 8px 16px;
+    }
+    .btn-secondary:hover {
+      background: #e2eaf0;
+    }
+    .danger-btn {
+      background: #fff2f0;
+      color: #c05a4a;
+      width: auto;
+      border: 1px solid #ffdad4;
+    }
+    hr {
+      margin: 24px 0;
+      border: 0;
+      height: 1px;
+      background: #e3edf2;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 14px 8px;
+      border-bottom: 1px solid #ecf3f6;
+    }
+    th {
+      font-weight: 700;
+      color: #2e6e88;
+    }
+    .badge-status {
+      background: #dfeeec;
+      padding: 5px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #136454;
+    }
+    .delete-icon {
+      background: none;
+      border: none;
+      color: #ce8174;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: auto;
+      padding: 5px 10px;
+    }
+    .delete-icon:hover {
+      color: #c0392b;
+      transform: scale(1.05);
+    }
+    .flex-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .empty-msg {
+      text-align: center;
+      padding: 32px;
+      color: #8dbbce;
+      font-style: italic;
+    }
+    footer {
+      margin-top: 48px;
+      text-align: center;
+      color: #7da2b6;
+      font-size: 0.75rem;
+    }
+    @media (max-width: 780px) {
+      body { padding: 16px; }
+      .panel-header h2 { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- header -->
+  <div class="header">
+    <div class="logo">
+      <h1><i class="fas fa-hospital-user" style="color:#249f8f;"></i> MediFlow HMS</h1>
+      <p>Intelligent patient flow · Seamless appointments</p>
+    </div>
+    <div class="badge-header">
+      <i class="fas fa-database"></i> Live demo · auto‑save
+    </div>
+  </div>
+
+  <!-- stats cards (dynamic) -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalPatientsCount">0</h3><p>Total Patients</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-info"><h3 id="totalAppointmentsCount">0</h3><p>Appointments</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-sun"></i></div><div class="stat-info"><h3 id="todayAppointmentsCount">0</h3><p>Today's Appointments</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-heartbeat"></i></div><div class="stat-info"><h3 id="activePatientsCount">0</h3><p>Active Patients</p></div></div>
+  </div>
+
+  <div class="dashboard-panels">
+    <!-- LEFT: Registration + Appointment form -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-user-plus" style="color:#249f8f;"></i> Register Patient</h2>
+      </div>
+      <div class="panel-body">
+        <form id="patientForm">
+          <div class="form-group">
+            <label><i class="fas fa-user-circle"></i> Full name *</label>
+            <input type="text" id="patName" placeholder="e.g., Olivia Chen" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-venus-mars"></i> Gender</label>
+            <select id="patGender"><option>Female</option><option>Male</option><option>Other</option></select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-phone-alt"></i> Contact</label>
+            <input type="text" id="patContact" placeholder="Phone / Email">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-notes-medical"></i> Medical notes</label>
+            <textarea id="patHistory" rows="2" placeholder="Allergies, chronic conditions..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Register Patient</button>
+        </form>
+
+        <hr>
+
+        <h2 style="font-size:1.3rem; margin-bottom: 16px;"><i class="fas fa-calendar-plus"></i> Schedule Appointment</h2>
+        <form id="appointmentForm">
+          <div class="form-group">
+            <label><i class="fas fa-id-card"></i> Select patient *</label>
+            <select id="appPatientSelect" required><option value="">-- Choose patient --</option></select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-stethoscope"></i> Department</label>
+            <select id="appDoctor">
+              <option>❤️ Cardiology</option><option>🧠 Neurology</option>
+              <option>👶 Pediatrics</option><option>🦴 Orthopedics</option>
+              <option>🩺 General Medicine</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-calendar-day"></i> Appointment date *</label>
+            <input type="date" id="appDate" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-clock"></i> Time slot</label>
+            <select id="appTime">
+              <option>09:00 AM</option><option>10:30 AM</option><option>12:00 PM</option>
+              <option>02:00 PM</option><option>03:30 PM</option><option>05:00 PM</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle"></i> Book Appointment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT: Patients & Appointments tables + management -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2><i class="fas fa-list-ul"></i> Registered Patients</h2>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrapper">
+          <table id="patientsTable">
+            <thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Gender</th><th style="width:50px"></th></tr></thead>
+            <tbody id="patientsList"><tr><td colspan="5" class="empty-msg">No patients yet — register one</td></tr></tbody>
+          </table>
+        </div>
+        <div class="flex-btns">
+          <button id="loadSampleBtn" class="btn-secondary btn" type="button"><i class="fas fa-flask"></i> Load sample</button>
+          <button id="clearAllBtn" class="danger-btn btn" type="button"><i class="fas fa-trash-alt"></i> Clear all data</button>
+        </div>
+      </div>
+
+      <div class="panel-header" style="border-top: 1px solid #ecf3f8;">
+        <h2><i class="fas fa-calendar-week"></i> Upcoming Appointments</h2>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrapper">
+          <table id="appointmentsTable">
+            <thead><tr><th>Patient</th><th>Dept</th><th>Date</th><th>Time</th><th>Status</th><th></th></tr></thead>
+            <tbody id="appointmentsList"><tr><td colspan="6" class="empty-msg">No appointments scheduled</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <i class="fas fa-shield-alt"></i> Data persists in browser (localStorage) • Clear data removes everything • Hospital management demo
+  </footer>
+</div>
+
+<script>
+  // ---------- CORE DATA ----------
+  let patients = [];      // each: { id, name, gender, contact, history, activeStatus }
+  let appointments = [];  // each: { id, patientId, patientName, doctorDept, date, time, status }
+
+  // helpers
+  function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 8); }
+
+  // load from localStorage
+  function loadData() {
+    const storedPatients = localStorage.getItem('mediflow_patients');
+    const storedAppointments = localStorage.getItem('mediflow_appointments');
+    if (storedPatients) patients = JSON.parse(storedPatients);
+    if (storedAppointments) appointments = JSON.parse(storedAppointments);
+    // ensure each patient has activeStatus field (compatibility)
+    patients = patients.map(p => ({ ...p, activeStatus: p.activeStatus !== undefined ? p.activeStatus : true }));
+    renderAll();
+  }
+
+  function saveToLocal() {
+    localStorage.setItem('mediflow_patients', JSON.stringify(patients));
+    localStorage.setItem('mediflow_appointments', JSON.stringify(appointments));
+  }
+
+  // sync patient names in appointments (if patient name changes, but we keep consistency)
+  function syncAppointmentNames() {
+    appointments.forEach(app => {
+      const found = patients.find(p => p.id === app.patientId);
+      if (found) app.patientName = found.name;
+      else app.patientName = "Deleted Patient";
+    });
+    saveToLocal();
+  }
+
+  // CRUD Patients
+  function addPatient(patientData) {
+    const newPatient = {
+      id: generateId(),
+      name: patientData.name.trim(),
+      gender: patientData.gender,
+      contact: patientData.contact,
+      history: patientData.history || '',
+      activeStatus: true,
+      created: new Date().toISOString()
+    };
+    patients.push(newPatient);
+    saveToLocal();
+    renderAll();
+    return newPatient;
+  }
+
+  function deletePatient(patientId) {
+    if (!confirm("⚠️ Delete patient and ALL their appointments? This action is permanent.")) return;
+    appointments = appointments.filter(a => a.patientId !== patientId);
+    patients = patients.filter(p => p.id !== patientId);
+    saveToLocal();
+    renderAll();
+  }
+
+  // CRUD Appointments
+  function addAppointment(data) {
+    const newApp = {
+      id: generateId(),
+      patientId: data.patientId,
+      patientName: data.patientName,
+      doctorDept: data.doctorDept,
+      date: data.date,
+      time: data.time,
+      status: "Scheduled"
+    };
+    appointments.push(newApp);
+    saveToLocal();
+    renderAll();
+    return newApp;
+  }
+
+  function deleteAppointment(appointmentId) {
+    if (confirm("Cancel this appointment?")) {
+      appointments = appointments.filter(a => a.id !== appointmentId);
+      saveToLocal();
+      renderAll();
+    }
+  }
+
+  // Stats & UI helpers
+  function getTodayAppointments() {
+    const today = new Date().toISOString().slice(0,10);
+    return appointments.filter(a => a.date === today).length;
+  }
+  function getActivePatients() {
+    return patients.filter(p => p.activeStatus === true).length;
+  }
+
+  // RENDER everything: stats, tables, dropdown
+  function renderAll() {
+    renderStats();
+    renderPatientsTable();
+    renderAppointmentsTable();
+    renderPatientDropdown();
+    syncAppointmentNames(); // just in case
+  }
+
+  function renderStats() {
+    document.getElementById('totalPatientsCount').innerText = patients.length;
+    document.getElementById('totalAppointmentsCount').innerText = appointments.length;
+    document.getElementById('todayAppointmentsCount').innerText = getTodayAppointments();
+    document.getElementById('activePatientsCount').innerText = getActivePatients();
+  }
+
+  function renderPatientsTable() {
+    const tbody = document.getElementById('patientsList');
+    if (patients.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">No patients registered</td></tr>';
+      return;
+    }
+    tbody.innerHTML = patients.map(patient => `
+      <tr>
+        <td style="font-weight:500;">${patient.id.slice(-6)}</td>
+        <td><strong>${escapeHtml(patient.name)}</strong>${patient.activeStatus ? '' : ' <span class="badge-status">inactive</span>'}</td>
+        <td>${escapeHtml(patient.contact || '—')}</td>
+        <td>${escapeHtml(patient.gender)}</td>
+        <td><button class="delete-icon" data-patient-id="${patient.id}" title="Delete patient"><i class="fas fa-trash-alt"></i></button></td>
+      </tr>
+    `).join('');
+    // attach delete events
+    document.querySelectorAll('.delete-icon[data-patient-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const pid = btn.getAttribute('data-patient-id');
+        deletePatient(pid);
+      });
+    });
+  }
+
+  function renderAppointmentsTable() {
+    const tbody = document.getElementById('appointmentsList');
+    if (appointments.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">No appointments scheduled</td></tr>';
+      return;
+    }
+    // sort by date (closest first)
+    const sorted = [...appointments].sort((a,b) => (a.date < b.date ? -1 : 1));
+    tbody.innerHTML = sorted.map(app => `
+      <tr>
+        <td>${escapeHtml(app.patientName)}</td>
+        <td>${escapeHtml(app.doctorDept)}</td>
+        <td>${escapeHtml(app.date)}</td>
+        <td>${escapeHtml(app.time)}</td>
+        <td><span class="badge-status">${escapeHtml(app.status)}</span></td>
+        <td><button class="delete-icon" data-appt-id="${app.id}" title="Cancel appointment"><i class="fas fa-times-circle"></i></button></td>
+      </tr>
+    `).join('');
+    document.querySelectorAll('.delete-icon[data-appt-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const appId = btn.getAttribute('data-appt-id');
+        deleteAppointment(appId);
+      });
+    });
+  }
+
+  function renderPatientDropdown() {
+    const select = document.getElementById('appPatientSelect');
+    if (!select) return;
+    if (patients.length === 0) {
+      select.innerHTML = '<option value="">-- No patients, register first --</option>';
+      return;
+    }
+    select.innerHTML = '<option value="">-- Choose patient --</option>' + 
+      patients.map(p => `<option value="${p.id}">${escapeHtml(p.name)} (${p.id.slice(-6)})</option>`).join('');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // ---------- FORM HANDLERS ----------
+  document.getElementById('patientForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('patName').value.trim();
+    if (!name) { alert("Please enter patient name"); return; }
+    const gender = document.getElementById('patGender').value;
+    const contact = document.getElementById('patContact').value;
+    const history = document.getElementById('patHistory').value;
+    addPatient({ name, gender, contact, history });
+    // reset name and contact only (keep gender default but clearer)
+    document.getElementById('patName').value = '';
+    document.getElementById('patContact').value = '';
+    document.getElementById('patHistory').value = '';
+    alert(`✅ Patient "${name}" registered successfully.`);
+  });
+
+  document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const patientId = document.getElementById('appPatientSelect').value;
+    if (!patientId) { alert("Please select a patient."); return; }
+    const patientObj = patients.find(p => p.id === patientId);
+    if (!patientObj) { alert("Patient not found"); return; }
+    const date = document.getElementById('appDate').value;
+    if (!date) { alert("Please select appointment date."); return; }
+    const doctorDept = document.getElementById('appDoctor').value;
+    const time = document.getElementById('appTime').value;
+    addAppointment({
+      patientId: patientObj.id,
+      patientName: patientObj.name,
+      doctorDept: doctorDept,
+      date: date,
+      time: time
+    });
+    document.getElementById('appDate').value = '';
+    alert(`📅 Appointment booked for ${patientObj.name} on ${date} at ${time}`);
+  });
+
+  // Load sample dataset
+  document.getElementById('loadSampleBtn').addEventListener('click', () => {
+    if (patients.length > 0 && !confirm("Existing data will keep, but sample patients might duplicate. Continue?")) return;
+    const demoPatients = [
+      { name: "Emma Watson", gender: "Female", contact: "+1 555 777 1234", history: "Seasonal allergies" },
+      { name: "Liam Rodriguez", gender: "Male", contact: "+1 555 888 4321", history: "Hypertension" },
+      { name: "Dr. Maya Chen", gender: "Female", contact: "clinic@mediflow.com", history: "Routine checkup" }
+    ];
+    let addedCount = 0;
+    demoPatients.forEach(dp => {
+      const exists = patients.some(p => p.name.toLowerCase() === dp.name.toLowerCase());
+      if (!exists) {
+        addPatient(dp);
+        addedCount++;
+      }
+    });
+    // add appointments for recent patients
+    if (patients.length) {
+      const today = new Date().toISOString().slice(0,10);
+      const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0,10);
+      const emma = patients.find(p => p.name === "Emma Watson");
+      const liam = patients.find(p => p.name === "Liam Rodriguez");
+      if (emma && !appointments.some(a => a.patientId === emma.id && a.date === today)) {
+        addAppointment({ patientId: emma.id, patientName: emma.name, doctorDept: "Neurology", date: today, time: "10:30 AM" });
+      }
+      if (liam && !appointments.some(a => a.patientId === liam.id && a.date === tomorrow)) {
+        addAppointment({ patientId: liam.id, patientName: liam.name, doctorDept: "Orthopedics", date: tomorrow, time: "02:00 PM" });
+      }
+    }
+    if (addedCount === 0 && patients.length === 0) alert("No sample added. But you can manually register.");
+    else alert(`Sample loaded! Added ${addedCount} demo patients + sample appointments.`);
+    renderAll();
+  });
+
+  // Completely clear storage
+  document.getElementById('clearAllBtn').addEventListener('click', () => {
+    if (confirm("⚠️ DANGER: This will delete ALL patients and appointments permanently. This cannot be undone. Continue?")) {
+      patients = [];
+      appointments = [];
+      saveToLocal();
+      renderAll();
+      alert("All hospital data has been cleared.");
+    }
+  });
+
+  // Set min date for appointment picker to today
+  const dateInput = document.getElementById('appDate');
+  if (dateInput) {
+    const todayYMD = new Date().toISOString().slice(0,10);
+    dateInput.min = todayYMD;
+  }
+
+  // initial render and load from storage
+  loadData();
+  // if completely empty, insert a welcome patient for demonstration (but not obtrusive)
+  if (patients.length === 0) {
+    // optional nice starter patient
+    const starter = addPatient({ name: "Alex Rivera (Demo)", gender: "Male", contact: "demo@mediflow.com", history: "No known allergies" });
+    const nextWeek = new Date(Date.now() + 3 * 86400000).toISOString().slice(0,10);
+    addAppointment({ patientId: starter.id, patientName: starter.name, doctorDept: "General Medicine", date: nextWeek, time: "11:00 AM" });
+  } else {
+    renderAll();
+  }
+</script>
+</body>
+</html>
